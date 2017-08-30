@@ -1,0 +1,27 @@
+version: "3"
+services:
+  mongodb:
+    container_name: "picap-mongo"
+    image: "mongo"
+    networks:
+     - "backend"
+    restart: "on-failure"
+    volumes:
+     - "./mongodb/data:/data/db"
+  node:
+    build: "./node"
+    container_name: "picap-node"
+    depends_on:
+     - "mongodb"
+    image: "picap:node"
+    networks:
+     - "backend"
+     - "default"
+    ports:
+     - "8000:80"
+    restart: "on-failure"
+    volumes:
+     - "./application:/application"
+networks:
+  backend:
+
